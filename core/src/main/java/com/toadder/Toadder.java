@@ -19,8 +19,16 @@ public class Toadder {
     private float x_position = 5*32;
     private float y_position = 0;
 
+    private float animation_speed_x = 0;
+    private float animation_speed_y = 0;
+    private float animation_final_x = x_position;
+    private float animation_final_y = y_position;
+
     private float animation_timestamp = 0;
     private boolean animating = false;
+
+    private float animation_speed = 150;
+    private float animation_delay = 0.15f;
 
     public Toadder() {
         frog_jump = Gdx.audio.newMusic(Gdx.files.internal("jump.wav"));
@@ -39,6 +47,7 @@ public class Toadder {
         next_frame = frame_up;
         current_frame.setX(x_position);
         current_frame.setY(y_position);
+        animation_speed = 32/animation_delay;
     }
 
     public void dx(float delta_x) {
@@ -47,16 +56,20 @@ public class Toadder {
 
         float new_x = this.x_position + delta_x;
         if (new_x > -1 && new_x < 416) {
-            this.x_position = new_x;
+            this.animation_final_x = new_x;
             frog_jump.play();
 
             if (delta_x > 0) {
                 current_frame = frame_jump_left;
                 next_frame = frame_left;
+                animation_speed_x = animation_speed;
+                animation_speed_y = 0;
             }
             if (delta_x < 0) {
                 current_frame = frame_jump_right;
                 next_frame = frame_right;
+                animation_speed_x = -animation_speed;
+                animation_speed_y = 0;
             }
 
             animation_timestamp = Gdx.graphics.getDeltaTime();
@@ -70,16 +83,20 @@ public class Toadder {
 
         float new_y = this.y_position + delta_y;
         if (new_y > -1 && new_y < 448) {
-            this.y_position = new_y;
+            this.animation_final_y = new_y;
             frog_jump.play();
 
             if (delta_y > 0) {
                 current_frame = frame_jump_up;
                 next_frame = frame_up;
+                animation_speed_y = animation_speed;
+                animation_speed_x = 0;
             }
             if (delta_y < 0) {
                 current_frame = frame_jump_down;
                 next_frame = frame_down;
+                animation_speed_y = -animation_speed;
+                animation_speed_x = 0;
             }
 
             animating = true;
@@ -91,9 +108,15 @@ public class Toadder {
     public void render(SpriteBatch sb) {
         if (animating) {
             animation_timestamp += Gdx.graphics.getDeltaTime();
-            if (animation_timestamp > 0.22) {
+            if (animation_timestamp > animation_delay) {
                 current_frame = next_frame;
                 animating = false;
+                y_position = animation_final_y;
+                x_position = animation_final_x;
+            }
+            else {
+                x_position += animation_speed_x * Gdx.graphics.getDeltaTime();
+                y_position += animation_speed_y * Gdx.graphics.getDeltaTime();
             }
         }
 
