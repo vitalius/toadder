@@ -16,6 +16,7 @@ public class Main extends ApplicationAdapter {
     private SpriteBatch batch;
     private Texture image;
     Music music;
+
     private Toadder toad;
     private Sprite background;
     private OrthographicCamera camera;

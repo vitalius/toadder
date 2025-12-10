@@ -1,3 +1,4 @@
+jump.wav
 libgdx.png
 src_resources_bg_music.ogg
 toadder_sprites.png
