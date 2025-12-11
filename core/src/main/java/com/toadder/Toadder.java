@@ -8,15 +8,12 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Toadder {
 
-    private Texture texture;
-    private Sprite frame_up, frame_down, frame_left, frame_right;
-    private Sprite frame_jump_up, frame_jump_down, frame_jump_left, frame_jump_right;
-
-    Music frog_jump;
-
+    private final Sprite frame_up, frame_down, frame_left, frame_right;
+    private final Sprite frame_jump_up, frame_jump_down, frame_jump_left, frame_jump_right;
+    private final Music frog_jump;
     private Sprite current_frame, next_frame;
 
-    private float x_position = 5*32;
+    private float x_position = 5*32; //initial position
     private float y_position = 0;
 
     private float animation_speed_x = 0;
@@ -27,12 +24,13 @@ public class Toadder {
     private float animation_timestamp = 0;
     private boolean animating = false;
 
-    private float animation_speed = 150;
-    private float animation_delay = 0.15f;
+    private final float animation_delay = 0.30f;
+    private final float animation_speed = 32/animation_delay;
 
     public Toadder() {
         frog_jump = Gdx.audio.newMusic(Gdx.files.internal("jump.wav"));
-        texture = new Texture("toadder_sprites.png");
+        Texture texture = new Texture("toadder_sprites.png");
+
         frame_up = new Sprite(texture, 0,0, 32,32);
         frame_down = new Sprite(texture, 32,0, 32,32);
         frame_left = new Sprite(texture, 64,0, 32,32);
@@ -47,7 +45,6 @@ public class Toadder {
         next_frame = frame_up;
         current_frame.setX(x_position);
         current_frame.setY(y_position);
-        animation_speed = 32/animation_delay;
     }
 
     public void dx(float delta_x) {
