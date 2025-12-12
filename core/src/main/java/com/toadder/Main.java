@@ -25,8 +25,6 @@ public class Main extends ApplicationAdapter {
     private Toadder toad;
     private Sprite background;
 
-    private final float step = 32;
-
     @Override
     public void create() {
         batch = new SpriteBatch();
@@ -39,68 +37,8 @@ public class Main extends ApplicationAdapter {
         music.setVolume(.5f);
         music.play();
 
-        Gdx.input.setInputProcessor(new GestureDetector(new GestureDetector.GestureListener() {
-            @Override
-            public boolean touchDown(float x, float y, int pointer, int button) {
-                return false;
-            }
-
-            @Override
-            public boolean tap(float x, float y, int count, int button) {
-                //Gdx.app.error("Toadder", "Tap!! " + x + ", " + y + ", " + count + ", " + button);
-                return false;
-            }
-
-            @Override
-            public boolean longPress(float x, float y) {
-                return false;
-            }
-
-            @Override
-            public boolean fling(float velocityX, float velocityY, int button) {
-                //Gdx.app.error("Toadder", "swipe!! " + velocityX + ", " + velocityY);
-
-                if (Math.abs(velocityX) > Math.abs(velocityY)) {
-                    if (velocityX > 0) {
-                        toad.dx(step);
-                    } else {
-                        toad.dx(-step);
-                    }
-                } else {
-                    if (velocityY > 0) {
-                        toad.dy(-step);
-                    } else {
-                        toad.dy(step);
-                    }
-                }
-                return false;
-            }
-
-            @Override
-            public boolean pan(float x, float y, float deltaX, float deltaY) {
-                return false;
-            }
-
-            @Override
-            public boolean panStop(float x, float y, int pointer, int button) {
-                return false;
-            }
-
-            @Override
-            public boolean zoom(float initialDistance, float distance) {
-                return false;
-            }
-
-            @Override
-            public boolean pinch(Vector2 initialPointer1, Vector2 initialPointer2, Vector2 pointer1, Vector2 pointer2) {
-                return false;
-            }
-
-            @Override
-            public void pinchStop() {
-
-            }
-        }));
+        ToadderGestureListener finger_listener = new ToadderGestureListener(toad);
+        Gdx.input.setInputProcessor(new GestureDetector(finger_listener));
 
         OrthographicCamera camera = new OrthographicCamera();
         camera.setToOrtho(false, 416, 448);
@@ -129,15 +67,15 @@ public class Main extends ApplicationAdapter {
 
     private void input() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.RIGHT)) {
-            toad.dx(step);
+            toad.moveRight();
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.LEFT)) {
-            toad.dx(-step);
+            toad.moveLeft();
         }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
-            toad.dy(step);
+            toad.moveUp();
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.DOWN)) {
-            toad.dy(-step);
+            toad.moveDown();
         }
     }
 }

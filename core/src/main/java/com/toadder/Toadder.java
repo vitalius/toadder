@@ -15,6 +15,7 @@ public class Toadder {
 
     private float x_position = 5*32; //initial position
     private float y_position = 0;
+    private final float move_step = 32;
 
     private float animation_speed_x = 0;
     private float animation_speed_y = 0;
@@ -24,8 +25,8 @@ public class Toadder {
     private float animation_timestamp = 0;
     private boolean animating = false;
 
-    private final float animation_delay = 0.30f;
-    private final float animation_speed = 32/animation_delay;
+    private final float animation_delay = 0.15f;
+    private final float animation_speed = move_step/animation_delay;
 
     public Toadder() {
         frog_jump = Gdx.audio.newMusic(Gdx.files.internal("jump.wav"));
@@ -46,6 +47,11 @@ public class Toadder {
         current_frame.setX(x_position);
         current_frame.setY(y_position);
     }
+
+    public void moveUp() { dy(move_step); }
+    public void moveDown() { dy(-move_step); }
+    public void moveLeft() { dx(-move_step); }
+    public void moveRight() { dx(move_step); }
 
     public void dx(float delta_x) {
         if (animating)
