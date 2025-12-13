@@ -16,6 +16,11 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
+
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Main extends ApplicationAdapter {
     private SpriteBatch batch;
@@ -23,6 +28,7 @@ public class Main extends ApplicationAdapter {
     Music music;
 
     private Toadder toad;
+    private Toadder badtoad;
     private Sprite background;
 
     @Override
@@ -31,6 +37,9 @@ public class Main extends ApplicationAdapter {
         image = new Texture("toadder_sprites.png");
         background = new Sprite(image, 384, 0, 416, 448);
         toad = new Toadder();
+
+        badtoad = new Toadder();
+        badtoad.dy(128);
 
         music = Gdx.audio.newMusic(Gdx.files.internal("src_resources_bg_music.ogg"));
         music.setLooping(true);
@@ -56,6 +65,7 @@ public class Main extends ApplicationAdapter {
         batch.begin();
         batch.draw(background, 0,0);
         toad.render(batch);
+        badtoad.render(batch);
         batch.end();
     }
 

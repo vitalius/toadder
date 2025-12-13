@@ -4,5 +4,5 @@ import java.util.List;
 
 public abstract class MovingEntity {
 
-    protected List<CollisionObject> collisionObjectList;
+    protected List<RectangleCollisionObject> rectangleCollisionObjectList;
 }

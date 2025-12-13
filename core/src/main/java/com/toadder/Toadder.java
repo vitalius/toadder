@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class Toadder {
+public class Toadder extends RectangleCollisionObject {
 
     private final Sprite frame_up, frame_down, frame_left, frame_right;
     private final Sprite frame_jump_up, frame_jump_down, frame_jump_left, frame_jump_right;
@@ -15,7 +15,7 @@ public class Toadder {
 
     private float x_position = 5*32; //initial position
     private float y_position = 0;
-    private final float move_step = 32;
+    private final float sprite_size = 32; // a square -- same width and height
 
     private float animation_speed_x = 0;
     private float animation_speed_y = 0;
@@ -26,7 +26,7 @@ public class Toadder {
     private boolean animating = false;
 
     private final float animation_delay = 0.15f;
-    private final float animation_speed = move_step/animation_delay;
+    private final float animation_speed = sprite_size /animation_delay;
 
     public Toadder() {
         frog_jump = Gdx.audio.newMusic(Gdx.files.internal("jump.wav"));
@@ -48,10 +48,22 @@ public class Toadder {
         current_frame.setY(y_position);
     }
 
-    public void moveUp() { dy(move_step); }
-    public void moveDown() { dy(-move_step); }
-    public void moveLeft() { dx(-move_step); }
-    public void moveRight() { dx(move_step); }
+    @Override
+    public float getX() { return x_position; }
+
+    @Override
+    public float getY() { return y_position; }
+
+    @Override
+    public float getWidth() { return sprite_size; }
+
+    @Override
+    public float getHeight() { return sprite_size; }
+
+    public void moveUp() { dy(sprite_size); }
+    public void moveDown() { dy(-sprite_size); }
+    public void moveLeft() { dx(-sprite_size); }
+    public void moveRight() { dx(sprite_size); }
 
     public void dx(float delta_x) {
         if (animating)
