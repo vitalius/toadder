@@ -24,9 +24,8 @@ public class Toadder extends RectangleCollisionObject {
 
     private float animation_timestamp = 0;
     private boolean animating = false;
-
     private final float animation_delay = 0.15f;
-    private final float animation_speed = sprite_size /animation_delay;
+    private final float animation_speed = sprite_size/animation_delay;
 
     public Toadder() {
         frog_jump = Gdx.audio.newMusic(Gdx.files.internal("jump.wav"));
@@ -65,57 +64,55 @@ public class Toadder extends RectangleCollisionObject {
     public void moveLeft() { dx(-sprite_size); }
     public void moveRight() { dx(sprite_size); }
 
-    public void dx(float delta_x) {
+    private void dx(float delta_x) {
         if (animating)
             return;
 
         float new_x = this.x_position + delta_x;
+        // check X axis borders of the map
         if (new_x > -1 && new_x < 416) {
-            this.animation_final_x = new_x;
-            frog_jump.play();
-
             if (delta_x > 0) {
                 current_frame = frame_jump_left;
                 next_frame = frame_left;
                 animation_speed_x = animation_speed;
-                animation_speed_y = 0;
             }
             if (delta_x < 0) {
                 current_frame = frame_jump_right;
                 next_frame = frame_right;
                 animation_speed_x = -animation_speed;
-                animation_speed_y = 0;
             }
 
+            animation_final_x = new_x;
+            animation_speed_y = 0;
             animation_timestamp = Gdx.graphics.getDeltaTime();
             animating = true;
+            frog_jump.play();
         }
     }
 
-    public void dy(float delta_y) {
+    private void dy(float delta_y) {
         if (animating)
             return;
 
         float new_y = this.y_position + delta_y;
+        // check Y axis borders of the map
         if (new_y > -1 && new_y < 448) {
-            this.animation_final_y = new_y;
-            frog_jump.play();
-
             if (delta_y > 0) {
                 current_frame = frame_jump_up;
                 next_frame = frame_up;
                 animation_speed_y = animation_speed;
-                animation_speed_x = 0;
             }
             if (delta_y < 0) {
                 current_frame = frame_jump_down;
                 next_frame = frame_down;
                 animation_speed_y = -animation_speed;
-                animation_speed_x = 0;
             }
 
-            animating = true;
+            animation_final_y = new_y;
+            animation_speed_x = 0;
             animation_timestamp = Gdx.graphics.getDeltaTime();
+            animating = true;
+            frog_jump.play();
         }
 
     }
@@ -124,8 +121,8 @@ public class Toadder extends RectangleCollisionObject {
         if (animating) {
             animation_timestamp += Gdx.graphics.getDeltaTime();
             if (animation_timestamp > animation_delay) {
-                current_frame = next_frame;
                 animating = false;
+                current_frame = next_frame;
                 y_position = animation_final_y;
                 x_position = animation_final_x;
             }
